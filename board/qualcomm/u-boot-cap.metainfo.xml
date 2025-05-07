@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="firmware">
+  <id>com.qualcomm.u-boot.firmware</id>
+  <name>U-Boot</name>
+  <name_variant_suffix>U-Boot for Qcom RB1</name_variant_suffix>
+  <summary>U-Boot firmware update for Qcom RB1</summary>
+  <description>
+    <p>
+    </p>
+  </description>
+  <provides>
+    <firmware type="flashed">77f90b51-588c-5ef0-aab9-046aeb2ac8c5</firmware>
+  </provides>
+  <url type="homepage">https://source.denx.de/u-boot/u-boot/</url>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <releases>
+    <release urgency="medium" version="2025.04" date="2025-05-07" install_duration="120">
+      <checksum filename="u-boot-cap.bin" target="content"/>
+    </release>
+  </releases>
+  <custom>
+    <value key="LVFS::VersionFormat">number</value>
+    <value key="LVFS::UpdateProtocol">org.uefi.capsule</value>
+  </custom>
+  <!-- these keywords are optional and are used for searching -->
+  <keywords>
+    <keyword>uefi</keyword>
+    <keyword>u-boot</keyword>
+    <keyword>bootloader</keyword>
+  </keywords>
+</component>

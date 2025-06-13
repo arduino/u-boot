@@ -165,7 +165,124 @@ static int qcom_of_fixup_nodes(void * __maybe_unused ctx, struct event *event)
 
 EVENT_SPY_FULL(EVT_OF_LIVE_BUILT, qcom_of_fixup_nodes);
 
+#include <part.h>
+#include <net-common.h>
+#include <env.h>
+
+/* Could be an array, today we only support wlanaddr part in mmcblk0boot0 */
+#define QCOM_WLANADDR_PART	"wlanaddr"
+#define QCOM_BDADDR_PART	"bdaddr"
+
+static int qcom_fixup_wlanaddr(void *fdt)
+{
+	struct disk_partition info;
+	struct blk_desc *bdesc;
+	unsigned char *data;
+	u8 mac[ARP_HLEN];
+	int ret;
+
+	if (eth_env_get_enetaddr("wlanaddr", mac))
+		goto fixup;
+
+	ret = blk_get_device_by_str("mmc", "0.1", &bdesc);
+	if (ret <0)
+		return 0;
+
+	ret = part_get_info_by_name(bdesc, QCOM_WLANADDR_PART, &info);
+	if (ret < 0) {
+		blk_dselect_hwpart(bdesc, 0);
+		return 0;
+	}
+
+	data = malloc(info.blksz);
+	if (!data) {
+		blk_dselect_hwpart(bdesc, 0);
+		return -ENOMEM;
+	}
+
+	ret = blk_dread(bdesc, info.start, 1, data);
+
+	blk_dselect_hwpart(bdesc, 0);
+	memcpy(mac, data, ARP_HLEN);
+	free(data);
+
+	if (ret < 0)
+		return ret;
+fixup:
+	/* This is specific to QRB2210... */
+	do_fixup_by_compat(fdt, "qcom,wcn3990-wifi", "local-mac-address",
+			   mac, 6, 1);
+
+	return 0;
+}
+
+static int qcom_fixup_bdaddr(void *fdt)
+{
+	struct disk_partition info;
+	struct blk_desc *bdesc;
+	unsigned char *data;
+	u8 bdaddr[ARP_HLEN];
+	int ret, i;
+
+	if (eth_env_get_enetaddr("bdaddr", bdaddr))
+		goto fixup;
+
+	ret = blk_get_device_by_str("mmc", "0.1", &bdesc);
+	if (ret <0)
+		return 0;
+
+	ret = part_get_info_by_name(bdesc, QCOM_BDADDR_PART, &info);
+	if (ret < 0) {
+		blk_dselect_hwpart(bdesc, 0);
+		return 0;
+	}
+
+	data = malloc(info.blksz);
+	if (!data) {
+		blk_dselect_hwpart(bdesc, 0);
+		return -ENOMEM;
+	}
+
+	ret = blk_dread(bdesc, info.start, 1, data);
+
+	blk_dselect_hwpart(bdesc, 0);
+	memcpy(bdaddr, data, ARP_HLEN);
+	free(data);
+
+	if (ret < 0)
+		return ret;
+fixup:
+	/*
+         * Reverse array since local-bd-address is formatted with least
+         * significant byte first (little endian).
+         */
+        for (i = 0; i < ARP_HLEN / 2; ++i) {
+                u8 tmp = bdaddr[i];
+                bdaddr[i] = bdaddr[ARP_HLEN - 1 - i];
+                bdaddr[ARP_HLEN - 1 - i] = tmp;
+        }
+
+	/* This is specific to QRB2210... */
+	do_fixup_by_compat(fdt, "qcom,wcn3950-bt", "local-bd-address",
+			   bdaddr, 6, 1);
+
+	return 0;
+}
+
+static int qcom_fixup_addrs(void *fdt)
+{
+	if (qcom_fixup_wlanaddr(fdt))
+		log_warning("Failed to fixup wlanaddr\n");
+
+	if (qcom_fixup_bdaddr(fdt))
+		log_warning("Failed to fixup bdaddr\n");
+
+	return 0;
+}
+
 int ft_board_setup(void __maybe_unused *blob, struct bd_info __maybe_unused *bd)
 {
+	qcom_fixup_addrs(blob);
+
 	return 0;
 }

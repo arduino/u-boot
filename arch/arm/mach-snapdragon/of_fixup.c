@@ -265,6 +265,8 @@ fixup:
 	/* This is specific to QRB2210... */
 	do_fixup_by_compat(fdt, "qcom,wcn3950-bt", "local-bd-address",
 			   bdaddr, 6, 1);
+	do_fixup_by_compat(fdt, "qcom,wcn3988-bt", "local-bd-address",
+                           bdaddr, 6, 1);
 
 	return 0;
 }

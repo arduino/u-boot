@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+
+/ {
+	smbios {
+		compatible = "u-boot,sysinfo-smbios";
+
+		smbios {
+			system {
+				manufacturer = "Arduino";
+				product = "Imola";
+				version = "1.0";
+			};
+
+			baseboard {
+				manufacturer = "Arduino";
+				product = "Imola";
+				version = "1.0";
+			};
+
+			chassis {
+				manufacturer = "Arduino";
+				product = "Imola";
+				version = "1.0";
+			};
+		};
+	};
+};

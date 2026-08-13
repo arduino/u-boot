@@ -32,6 +32,13 @@ config PHY_QCOM_QMP_UFS
 	help
 	  Enable this to support the UFS QMP PHY on various Qualcomm chipsets.
 
+config PHY_QCOM_QMP_USB3_LEGACY
+	bool "Qualcomm QMP USB3-only legacy PHY driver"
+	depends on PHY && ARCH_SNAPDRAGON
+	help
+	  Enable this to support the legacy USB3-only QMP PHY (v3) found on
+	  older Qualcomm chipsets such as QCM2290/QCS615 and derivatives.
+
 config PHY_QCOM_QUSB2
 	bool "Qualcomm USB QUSB2 PHY driver"
 	depends on PHY && ARCH_SNAPDRAGON

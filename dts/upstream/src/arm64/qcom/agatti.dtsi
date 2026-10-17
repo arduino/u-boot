@@ -298,6 +298,15 @@
 		#size-cells = <2>;
 		ranges;
 
+		/*
+		 * OP-TEE (BL32) secure DRAM, 4 MiB TEE RAM + 33 MiB TA RAM:
+		 * must match TF-A's BL32 window and OP-TEE's CFG_TZDRAM_START.
+		 */
+		optee_mem: optee@46200000 {
+			reg = <0x0 0x46200000 0x0 0x2500000>;
+			no-map;
+		};
+
 		hyp_mem: hyp@45700000 {
 			reg = <0x0 0x45700000 0x0 0x600000>;
 			no-map;

@@ -13,8 +13,10 @@
 /* NOP parent nodes to stub clocks */
 static const struct udevice_id nop_parent_ids[] = {
 	{ .compatible = "qcom,rpm-proc" },
+#if !IS_ENABLED(CONFIG_QCOM_SMD_RPM)
 	{ .compatible = "qcom,glink-rpm" },
 	{ .compatible = "qcom,glink-smd-rpm" },
+#endif
 	{ }
 };
 

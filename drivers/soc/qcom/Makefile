@@ -2,4 +2,5 @@
 
 obj-$(CONFIG_QCOM_COMMAND_DB) += cmd-db.o
 obj-$(CONFIG_QCOM_RPMH) += rpmh-rsc.o rpmh.o
+obj-$(CONFIG_QCOM_SMD_RPM) += smd-rpm.o
 obj-$(CONFIG_QCOM_SMEM) += smem.o

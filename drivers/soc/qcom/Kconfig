@@ -25,6 +25,15 @@ config QCOM_RPMH
 	  Say y here to support the Qualcomm RPMh (resource peripheral manager)
 	  if you need to control regulators on Qualcomm platforms, say y here.
 
+config QCOM_SMD_RPM
+	bool "Qualcomm RPM requests over GLINK"
+	depends on DM_MAILBOX
+	help
+	  Say y here to talk to the RPM (resource power manager) of older
+	  Qualcomm SoCs such as QCM2290, through the GLINK transport in the
+	  RPM message RAM. The RPM power domain and regulator drivers send
+	  their requests through it.
+
 config QCOM_SMEM
 	bool "Qualcomm SMEM support"
 	help

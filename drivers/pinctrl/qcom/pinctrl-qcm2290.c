@@ -13,8 +13,14 @@
 #define MAX_PIN_NAME_LEN 32
 static char pin_name[MAX_PIN_NAME_LEN] __section(".data");
 
+/* The QUP serial engines are function 1 on every pin they can use. */
 static const struct pinctrl_function msm_pinctrl_functions[] = {
+	{ "qup0", 1 },
+	{ "qup1", 1 },
+	{ "qup2", 1 },
+	{ "qup3", 1 },
 	{ "qup4", 1 },
+	{ "qup5", 1 },
 	{ "gpio", 0 },
 };
 

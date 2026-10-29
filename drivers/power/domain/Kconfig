@@ -102,6 +102,13 @@ config QCOM_RPMH_POWER_DOMAIN
 	  The RPMH power domain driver is responsible for managing power
 	  domains on Qualcomm SoCs.
 
+config QCOM_RPM_POWER_DOMAIN
+	bool "Enable the QCOM RPM power domain driver"
+	depends on POWER_DOMAIN && QCOM_SMD_RPM
+	help
+	  Power domains (CX, MX) of Qualcomm SoCs with an RPM, such as
+	  QCM2290, voted over SMD RPM.
+
 config RENESAS_R8A78000_POWER_DOMAIN
 	bool "Enable the Renesas R-Car MDLC Power domain and reset driver"
 	depends on POWER_DOMAIN && ARCH_RENESAS

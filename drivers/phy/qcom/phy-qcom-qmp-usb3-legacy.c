@@ -518,6 +518,10 @@ static struct phy_ops qmp_usb3_legacy_ops = {
 
 static const struct udevice_id qmp_usb3_legacy_ids[] = {
 	{
+		.compatible = "qcom,qcm2290-qmp-usb3-phy",
+		.data = (ulong)&shikra_usb3phy_cfg,
+	},
+	{
 		.compatible = "qcom,shikra-qmp-usb3-phy",
 		.data = (ulong)&shikra_usb3phy_cfg,
 	},

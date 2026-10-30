@@ -931,7 +931,7 @@ static int msm_sdc_probe(struct udevice *dev)
 		udelay(200);
 	}
 
-	host->quirks = SDHCI_QUIRK_WAIT_SEND_CMD | SDHCI_QUIRK_BROKEN_R1B;
+	host->quirks = SDHCI_QUIRK_BROKEN_R1B;
 
 	host->max_clk = 0;
 

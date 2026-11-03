@@ -308,9 +308,8 @@ static void configure_env(void)
 			env_set("board", buf);
 		}
 
-		/* The last compatible is always the SoC compatible */
-		ret = ofnode_read_string_index(root, "compatible",
-					       compat_count - 1, &last_compat);
+		/* The most specific SoC compatible follows the board one */
+		ret = ofnode_read_string_index(root, "compatible", 1, &last_compat);
 		if (ret < 0) {
 			log_warning("Can't read second compatible\n");
 			return;
